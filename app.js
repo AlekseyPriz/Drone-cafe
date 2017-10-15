@@ -27,8 +27,13 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 // app.use('/users', users);
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
+  res.sendFile(path.join(__dirname + '/user.html'));
 });
+
+app.get('/kitchen', function(req, res) {
+  res.sendFile(path.join(__dirname + '/kitchen.html'));
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
