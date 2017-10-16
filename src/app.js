@@ -1,9 +1,9 @@
 console.log('Приложение подключено');
 
-let app = angular.module('droneCafe', ['ui.router']);
+let app = angular.module('droneCafe', ['ui.router', 'ngRoute']);
 
 
-app.config(function($stateProvider) {
+app.config([ '$stateProvider', '$locationProvider',   function($stateProvider, $locationProvider) {
 
   var menuState = {
     name: 'menu',
@@ -18,8 +18,12 @@ app.config(function($stateProvider) {
     '<user-balance></user-balance>'
   };
 
+
   $stateProvider.state(menuState);
   $stateProvider.state(userState);
 
+  $locationProvider.html5Mode(true);
 
-});
+
+}]);
+
