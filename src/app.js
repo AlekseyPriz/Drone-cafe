@@ -8,7 +8,8 @@ app.config([ '$stateProvider', '$locationProvider',   function($stateProvider, $
   var menuState = {
     name: 'menu',
     url: '/menu',
-    template: '<cafe-menu></cafe-menu>'
+    template: '<cafe-menu></cafe-menu>',
+    controller: 'cafeMenuCtrl'
   };
 
   var userState = {
@@ -18,9 +19,15 @@ app.config([ '$stateProvider', '$locationProvider',   function($stateProvider, $
     '<user-balance></user-balance>'
   };
 
+  var kitchenState = {
+    name: 'kitchen',
+    url: '/kitchen',
+    template: ' заказанные блюда'
+  };
 
   $stateProvider.state(menuState);
   $stateProvider.state(userState);
+  $stateProvider.state(kitchenState);
 
   $locationProvider.html5Mode(true);
 

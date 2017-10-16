@@ -1,34 +1,9 @@
 <ul class="collection">
-    <li class="collection-item avatar">
-        <i class="material-icons circle blue">мпф</i>
-        <span class="title">Макароны</span>
-        <p>По флотски <br>
-            100 рублей
-        </p>
+    <li ng-repeat="dish in menu" class="collection-item avatar">
+        <i class="material-icons circle blue">{{dish.name[0].toUpperCase()}}</i>
+        <span class="title">{{dish.name}}</span>
+        <p>{{dish.price}} рублей.</p>
         <a href="#!" class="secondary-content  btn">Заказать</a>
     </li>
-    <li class="collection-item avatar">
-        <i class="material-icons circle">крт</i>
-        <span class="title">Картошка</span>
-        <p>в мундирах <br>
-            150 рублей
-        </p>
-        <a href="#!" class="secondary-content  btn">Заказать</a>
-    </li>
-    <li class="collection-item avatar">
-        <i class="material-icons circle green">сск</i>
-        <span class="title">Сосиски</span>
-        <p>Молочные <br>
-            200 рублей
-        </p>
-        <a href="#!" class="secondary-content  btn">Заказать</a>
-    </li>
-    <li class="collection-item avatar">
-        <i class="material-icons circle red">брщ</i>
-        <span class="title">Борщ</span>
-        <p>Со сметаной <br>
-            300 рублей
-        </p>
-        <a href="#!" class="secondary-content  btn">Заказать</a>
-    </li>
+
 </ul>
