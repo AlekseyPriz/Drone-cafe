@@ -17,6 +17,10 @@ app.controller('cafeMenuCtrl', function ($scope) {
     {
       name: "Борщщ",
       price: 300
+    },
+    {
+      name: "Суп с фрикадельками",
+      price: 50
     }
   ]
 
