@@ -34,6 +34,11 @@ app.get('/kitchen', function(req, res) {
   res.sendFile(path.join(__dirname + '/kitchenInterface.html'));
 });
 
+app.all('/*', function(req, res) {
+  console.log("Сервер перенаправлен на ангулар роутер");
+  res.sendfile(path.join(__dirname + '/index.html'));
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
