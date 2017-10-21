@@ -3,7 +3,17 @@ console.log('Приложение подключено');
 let app = angular.module('droneCafe', ['ui.router', 'ngRoute']);
 
 
-app.config([ '$stateProvider', '$locationProvider',   function($stateProvider, $locationProvider) {
+app.config(['$stateProvider',
+            '$locationProvider',
+            '$urlRouterProvider',
+              function($stateProvider, $locationProvider, $urlRouterProvider) {
+
+  var startState = {
+    name: 'login',
+    url: '/login',
+    template: '<login-form></login-form>',
+    //controller: 'cafeMenuCtrl'
+  };
 
   var menuState = {
     name: 'menu',
@@ -15,8 +25,7 @@ app.config([ '$stateProvider', '$locationProvider',   function($stateProvider, $
   var userState = {
     name: 'user',
     url: '/user',
-    template: ' <login-form></login-form>' +
-    '<user-balance></user-balance>'
+    template: '<user-balance></user-balance>'
   };
 
   var kitchenState = {
@@ -25,10 +34,12 @@ app.config([ '$stateProvider', '$locationProvider',   function($stateProvider, $
     template: ' заказанные блюда'
   };
 
+  $stateProvider.state(startState);
   $stateProvider.state(menuState);
   $stateProvider.state(userState);
   $stateProvider.state(kitchenState);
 
+  $urlRouterProvider.otherwise('/login');
   $locationProvider.html5Mode(true);
 
 
