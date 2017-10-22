@@ -9,15 +9,14 @@ const app = express();
 
 // Настройка Монгуза
 //
-//mongodb://dronecafeuser:drone308938731@ds127065.mlab.com:27065/dronecafe
-  const dbURI = 'mongodb://127.0.0.1:27017/droneCafe';
+//
+const dbURI = 'mongodb://127.0.0.1:27017/droneCafe';
 
-  if (process.env.NODE_ENV === 'production') {
-    //noinspection JSAnnotator
-    mongoose.connect(process.env.MONGOLAB_URI, { useMongoClient: true });
-    //dbURI = process.env.MONGOLAB_URI;
-  }
-//mongoose.connect(dbURI, { useMongoClient: true });
+if (process.env.NODE_ENV === 'production') {
+  mongoose.connect(process.env.MONGOLAB_URI, { useMongoClient: true });
+} else {
+  mongoose.connect(dbURI, { useMongoClient: true });
+}
 
 mongoose.connection.on('error', (err) => {
   console.log('Ошибка подключения Монгуза' + err);
