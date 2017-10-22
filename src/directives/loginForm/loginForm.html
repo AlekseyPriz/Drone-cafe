@@ -1,6 +1,11 @@
 <div class="row">
     <div class="container card-panel teal col s6 offset-s3 white-text">
-        <span>
+        <span ng-if="factory.userName">
+            <h3>
+                           Добро пожаловать, {{factory.userName}}
+            </h3>
+        </span>
+        <span ng-if="!factory.userName">
             <h3>
                            Добро пожаловать в Drone Cafe
             </h3>
@@ -10,15 +15,15 @@
         <div class="row">
             <div class="input-field col s6 offset-s3">
                 <i class="material-icons prefix">account_circle</i>
-                <input id="icon_prefix" type="text" class="validate">
+                <input id="icon_prefix" type="text" class="validate" ng-model="user.name">
                 <label for="icon_prefix">Имя</label>
             </div>
             <div class="input-field col s6 offset-s3">
                 <i class="material-icons prefix">email</i>
-                <input id="icon_email" type="email" class="validate">
+                <input id="icon_email" type="email" class="validate" ng-model="user.email">
                 <label for="icon_email">e-mail</label>
             </div>
-            <div class="btn col s6 offset-s3">
+            <div class="btn col s6 offset-s3" ng-click="setUser()">
                 <span>Войти</span>
             </div>
         </div>

@@ -1,10 +1,12 @@
-<ul class="collection">
-    
-    <li ng-repeat="dish in menu" class="collection-item avatar">
-        <i class="material-icons circle blue">{{dish.name[0].toUpperCase()}}</i>
-        <span class="title">{{dish.name}}</span>
-        <p>{{dish.price}} рублей.</p>
-        <a href="#!" class="secondary-content  btn">Заказать</a>
-    </li>
+<div class="container col s6 offset-s3">
+    <ul class="collection">
 
-</ul>
+        <li ng-repeat="dish in menu" class="collection-item avatar">
+            <i class="material-icons circle blue">{{dish.name[0].toUpperCase()}}</i>
+            <span class="title">{{dish.name}}</span>
+            <p>{{dish.price}} рублей.</p>
+            <a href="#!" class="secondary-content  btn">Заказать</a>
+        </li>
+
+    </ul>
+</div>

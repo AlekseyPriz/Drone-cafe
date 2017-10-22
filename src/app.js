@@ -12,7 +12,7 @@ app.config(['$stateProvider',
     name: 'login',
     url: '/login',
     template: '<login-form></login-form>',
-    //controller: 'cafeMenuCtrl'
+    //controller: 'loginCtrl'
   };
 
   var menuState = {

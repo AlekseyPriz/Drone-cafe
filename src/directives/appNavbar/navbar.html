@@ -1,11 +1,11 @@
-<div class="navbar-fixed">
+<div class="navbar-fixed" >
     <nav>
         <div class="nav-wrapper">
             <a href="#" class="brand-logo right">Drone Cafe</a>
             <ul id="nav-mobile" class="left hide-on-min-and-down">
-                <li><a ui-sref="login">Войти</a></li>
-                <li><a ui-sref="user">Личный кабинет</a></li>
-                <li><a ui-sref="menu">меню</a></li>
+                <li><a ui-sref="login" ng-if="!factory.userName">Войти</a></li>
+                <li><a ui-sref="user" ng-if="factory.userName">Личный кабинет</a></li>
+                <li><a ui-sref="menu" ng-if="factory.userName">Меню</a></li>
             </ul>
         </div>
     </nav>
