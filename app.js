@@ -17,7 +17,7 @@ const app = express();
     mongoose.connect(process.env.MONGOLAB_URI, { useMongoClient: true });
     //dbURI = process.env.MONGOLAB_URI;
   }
-mongoose.connect(dbURI, { useMongoClient: true });
+//mongoose.connect(dbURI, { useMongoClient: true });
 
 mongoose.connection.on('error', (err) => {
   console.log('Ошибка подключения Монгуза' + err);
