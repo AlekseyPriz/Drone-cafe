@@ -13,6 +13,7 @@ const app = express();
   const dbURI = 'mongodb://127.0.0.1:27017/droneCafe';
 
   if (process.env.NODE_ENV === 'production') {
+    //noinspection JSAnnotator
     dbURI = process.env.MONGOLAB_URI;
   }
 mongoose.connect(dbURI, { useMongoClient: true });
