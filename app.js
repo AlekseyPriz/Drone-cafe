@@ -8,8 +8,14 @@ const mongoose = require('mongoose');
 const app = express();
 
 // Настройка Монгуза
+//
+//
+  const dbURI= 'mongodb://127.0.0.1:27017/droneCafe';
 
-mongoose.connect('mongodb://127.0.0.1:27017/droneCafe', { useMongoClient: true });
+  if (process.env.NODE_ENV === 'production') {
+    dbURI= process.env.MONGOLAB_URI;
+  }
+mongoose.connect(dbURI, { useMongoClient: true });
 
 mongoose.connection.on('error', () => {
   console.log('Ошибка подключения Монгуза')
