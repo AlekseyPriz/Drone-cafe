@@ -14,7 +14,8 @@ const app = express();
 
   if (process.env.NODE_ENV === 'production') {
     //noinspection JSAnnotator
-    dbURI = process.env.MONGOLAB_URI;
+    mongoose.connect(process.env.MONGOLAB_URI, { useMongoClient: true });
+    //dbURI = process.env.MONGOLAB_URI;
   }
 mongoose.connect(dbURI, { useMongoClient: true });
 
