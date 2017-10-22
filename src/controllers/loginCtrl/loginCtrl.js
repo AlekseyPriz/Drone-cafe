@@ -15,6 +15,8 @@ app.controller('loginCtrl', function ($scope, $http, loginFactory) {
   //   });
   // };
 
+  //https://guarded-thicket-38576.herokuapp.com/api/v1/user
+
   $scope.setUser = function () {
     console.log($scope.user);
 

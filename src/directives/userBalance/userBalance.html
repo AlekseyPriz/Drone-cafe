@@ -4,7 +4,9 @@
           <span class="white-text">
               <h2>{{factory.userName}}</h2>
               <h3>Баланс : {{factory.balance}} Галактических кредитов</h3>
-              <a class="waves-effect waves-light btn blue"><i class="material-icons left">attach_money</i>Пополнить</a>
+              <a class="waves-effect waves-light btn blue" ng-click="getMoney()">
+                  <i class="material-icons left">attach_money</i>Пополнить
+              </a>
           </span>
         </div>
     </div>

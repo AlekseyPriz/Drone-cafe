@@ -25,7 +25,9 @@ app.config(['$stateProvider',
   var userState = {
     name: 'user',
     url: '/user',
-    template: '<user-balance></user-balance>'
+    template: '<user-balance></user-balance>',
+    controller: 'userBalanceCtrl'
+
   };
 
   var kitchenState = {
