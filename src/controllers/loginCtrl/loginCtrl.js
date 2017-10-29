@@ -15,12 +15,14 @@ app.controller('loginCtrl', function ($scope, $http, loginFactory) {
   //   });
   // };
 
-  //https://guarded-thicket-38576.herokuapp.com/api/v1/user
 
   $scope.setUser = function () {
     console.log($scope.user);
 
-    return $http({method: 'POST', url: 'https://guarded-thicket-38576.herokuapp.com/api/v1/user', data:  $scope.user})
+    return $http({method: 'POST', url:
+      //'http://localhost:4000/api/v1/user'
+      'https://guarded-thicket-38576.herokuapp.com/api/v1/user'
+    , data:  $scope.user})
       .then(function (data) {
         console.log(data.data.name);
         $scope.factory.userName = data.data.name;
