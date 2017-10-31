@@ -8,7 +8,6 @@ app.controller('kitchenCtrl', function ($scope) {
       name: "Макароны по-флотски",
       number: 0,
       status: "Заказано",
-      ordered: true
     },
     {
       name: "Картофель в мундирах",
@@ -39,6 +38,15 @@ app.controller('kitchenCtrl', function ($scope) {
   $scope.startCooking = function (dish) {
     $scope.dishesInProcess.push(dish);
     console.log($scope.dishesInProcess);
+  };
+
+  $scope.remove = function(dish){
+    let indexInProcess = $scope.dishesInProcess.indexOf(dish)
+    let indexOrdered = $scope.orderedDishes.indexOf(dish)
+
+    $scope.dishesInProcess.splice(indexInProcess,1);
+    $scope.orderedDishes.splice(indexOrdered,1);
+
   }
 
 

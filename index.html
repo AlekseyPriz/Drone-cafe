@@ -8,6 +8,7 @@
 
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
+    <!--<script src="http://localhost:4000/socket.io/socket.io.js"></script>-->
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <base href="/">
@@ -44,6 +45,16 @@
     <script src="src/controllers/userBalanceCtrl.js"></script>
 
     <script src="src/factories/loginFactory.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!--<script>-->
+        <!--var socket = io.connect();-->
+        <!--socket.on('get menu', function (data) {-->
+            <!--console.log(data);-->
+            <!--socket.emit('menu was received', 'Меню получено');-->
+        <!--});-->
+    <!--</script>-->
 
 </body>
 </html>

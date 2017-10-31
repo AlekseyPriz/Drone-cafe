@@ -4,6 +4,8 @@ const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const file = require('./menu/file-promise');
+
 
 const app = express();
 
@@ -48,6 +50,25 @@ const  User = mongoose.model('User', userSchema);
 //   }
 // });
 
+
+// Загрузка меню
+file
+  .read('../menu/menu.json')
+  .then(data => JSON.parse(data))
+  .then(data => {
+    console.log(data)
+  })
+  .catch(err => console.error(err));
+
+// Дрон кафе
+
+const drone = require('netology-fake-drone-api');
+
+drone
+  .deliver()
+  .then(() => console.log('Доставлено'))
+  .catch(() => console.log('Возникли сложности'));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -77,12 +98,13 @@ app.post('/api/v1/user', function(req, res) {
     res.send({ error: 'Данные указаны не полностью' });
   }
 
-  User.find({email: req.body.email}, (err, result) => {
+  User.find({name : req.body.name, email: req.body.email}, (err, result) => {
     if (err) {
       console.log(err);
     } else if (result.length) {
-      console.log('Исходная коллекция: ', result);
+      console.log('Исходная коллекция: ', result[0]);
       res.json(result);
+
     } else {
 
       User.create({name : req.body.name, email : req.body.email}, (err, result) => {
@@ -122,6 +144,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
 
 
 module.exports = app;

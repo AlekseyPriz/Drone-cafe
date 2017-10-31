@@ -19,12 +19,12 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     $scope.order.push({
       number: $scope.dishQuantity,
       name: dish.name,
-      price: dish.price
+      price: +dish.price
     });
     console.log($scope.order);
     $scope.dishQuantity += 1;
-    $scope.orderValue += dish.price;
-    $scope.factory.balance -= dish.price;
+    $scope.orderValue += +dish.price;
+    $scope.factory.balance -= +dish.price;
   };
 
   $scope.isEnough = function (dish) {
@@ -36,28 +36,39 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
 
   };
 
-  $scope.menu = [
-    {
-      name: "Макароны по-флотски",
-      price: 100
-    },
-    {
-      name: "Картофель в мундирах",
-      price: 150
-    },
-    {
-      name: "Сосиски молочные",
-      price: 200
-    },
-    {
-      name: "Борщщ",
-      price: 300
-    },
-    {
-      name: "Суп с фрикадельками",
-      price: 50
-    }
-  ];
+  var socket = io.connect();
+  socket.on('get menu', function (menuData) {
+    $scope.$apply(function () {
+      $scope.menu = menuData;
+    });
+    console.log(menuData);
+    socket.emit('menu was received', 'Меню получено');
+  });
+
+
+
+  // $scope.menu = [
+  //   {
+  //     name: "Макароны по-флотски",
+  //     price: 100
+  //   },
+  //   {
+  //     name: "Картофель в мундирах",
+  //     price: 150
+  //   },
+  //   {
+  //     name: "Сосиски молочные",
+  //     price: 200
+  //   },
+  //   {
+  //     name: "Борщщ",
+  //     price: 300
+  //   },
+  //   {
+  //     name: "Суп с фрикадельками",
+  //     price: 50
+  //   }
+  // ];
 
   $scope.order = [
   ]

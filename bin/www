@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('drone-cafe:server');
 var http = require('http');
+const file = require('../menu/file-promise');
+
 
 /**
  * Get port from environment and store in Express.
@@ -88,3 +90,27 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function (socket) {
+
+  // Загрузка меню
+  file
+    .read('../menu/menu.json')
+    .then(data => JSON.parse(data))
+    .then(data => {
+      console.log(data);
+      socket.emit('get menu', data);
+
+    })
+    .catch(err => console.error(err));
+
+  //socket.emit('news', { hello: 'world' });
+  socket.on('menu was received', function (data) {
+    console.log("Данные получены от клиента" + data);
+  });
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+  });
+});

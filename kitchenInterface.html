@@ -24,7 +24,12 @@
             <li class="collection-header"><h4>Изготавливаются</h4></li>
             <li class="collection-item" ng-repeat="dish in dishesInProcess">
                 <div class="conteiner" style="height: 37px;">
-                    <span>{{dish.number}}) {{dish.name}}</span><a class="waves-effect waves-light btn right valign-wrapper">Готово</a>
+                    <span>
+                        {{dish.number}}) {{dish.name}}
+                    </span>
+                    <a class="waves-effect waves-light btn right valign-wrapper" ng-click="remove(dish)">
+                        Готово
+                    </a>
                 </div>
             </li>
         </ul>
@@ -35,7 +40,7 @@
             <li class="collection-item" ng-repeat="dish in orderedDishes">
                 <div class="conteiner" style="height: 37px;">
                     <span>{{dish.number}}) {{dish.name}}</span>
-                    <a class="waves-effect waves-light btn right valign-wrapper" ng-click="startCooking(dish)">
+                    <a class="waves-effect waves-light btn right valign-wrapper" ng-if="!dish.ordered" ng-click="startCooking(dish); dish.ordered=true">
                         Начать готовить
                     </a>
                     <a class="waves-effect waves-light btn right valign-wrapper disabled" ng-if="dish.ordered">

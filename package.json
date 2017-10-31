@@ -18,7 +18,9 @@
     "materialize-css": "^0.100.2",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2",
-    "mongoose": "^4.12.3"
+    "mongoose": "^4.12.3",
+    "netology-fake-drone-api": "^1.0.1",
+    "socket.io": "^2.0.4"
   },
   "main": "app.js",
   "engines": {

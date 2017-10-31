@@ -9,7 +9,7 @@
               </a>
           </span>
         </div>
-        <ul class="collection">
+        <ul class="collection" ng-if="menu">
             <li ng-repeat="dish in menu" class="collection-item avatar">
                 <i class="material-icons circle blue">{{dish.name[0].toUpperCase()}}</i>
                 <span class="title">{{dish.name}}</span>
