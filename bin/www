@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('drone-cafe:server');
 var http = require('http');
 const file = require('../menu/file-promise');
+const path = require('path');
 
 
 /**
@@ -97,7 +98,8 @@ io.sockets.on('connection', function (socket) {
 
   // Загрузка меню
   file
-    .read('../menu/menu.json')
+
+    .read(path.join(__dirname, '/menu/menu.json')')
     .then(data => JSON.parse(data))
     .then(data => {
       console.log(data);
