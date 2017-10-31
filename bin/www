@@ -99,7 +99,7 @@ io.sockets.on('connection', function (socket) {
   // Загрузка меню
   file
 
-    .read(path.join(__dirname, '/menu/menu.json')')
+    .read(path.join(__dirname, '/menu/menu.json'))
     .then(data => JSON.parse(data))
     .then(data => {
       console.log(data);
