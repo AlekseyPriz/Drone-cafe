@@ -14,8 +14,8 @@
                 <i class="material-icons circle blue">{{dish.name[0].toUpperCase()}}</i>
                 <span class="title">{{dish.name}}</span>
                 <p>{{dish.price}} рублей.</p>
-                <a href="#!" class="secondary-content  btn" ng-click="putDishToOrder(dish)" ng-if="isEnough(dish)">Выбрать</a>
-                <a href="#!" class="secondary-content  btn disabled" ng-if="!isEnough(dish)" ng-click=""> Пополнить на {{dish.price - factory.balance}} ГК</a>
+                <a href="#!" class="secondary-content  btn" ng-click="putDishToOrder(dish)" ng-if="isEnough(dish.price)">Выбрать</a>
+                <a href="#!" class="secondary-content  btn disabled" ng-if="!isEnough(dish.price)" ng-click=""> Пополнить на {{dish.price - factory.balance}} ГК</a>
             </li>
         </ul>
     </div>
@@ -32,8 +32,8 @@
 
         <span ng-if="orderValue">Сумма заказа : {{orderValue}} ГК</span>
 
-        <!--<a href="#!" class="secondary-content  btn" ng-if="isEnough() && orderValue" ng-click=""> Заказать</a>-->
-        <!--<a href="#!" class="secondary-content  btn disabled" ng-if="!isEnough()" ng-click=""> Заказать</a>-->
+        <a href="#!" class="secondary-content  btn" ng-if="isEnough() && orderValue" ng-click=""> Заказать</a>
+        <a href="#!" class="secondary-content  btn disabled" ng-if="!isEnough()" ng-click=""> Заказать</a>
 
     </div>
 </div>

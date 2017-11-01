@@ -1,6 +1,6 @@
 app.factory('loginFactory', function () {
   return {
     userName: '',
-    balance: ''
+    balance: 100
   }
 });

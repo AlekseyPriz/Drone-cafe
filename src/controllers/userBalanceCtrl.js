@@ -15,7 +15,7 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
 
 
   $scope.putDishToOrder = function (dish) {
-    console.log('Блюдо' + dish + 'добавлено к заказу');
+    console.log('Блюдо "' + dish.name + '" добавлено к заказу');
     $scope.order.push({
       number: $scope.dishQuantity,
       name: dish.name,
@@ -27,8 +27,8 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     $scope.factory.balance -= +dish.price;
   };
 
-  $scope.isEnough = function (dish) {
-    if($scope.factory.balance >= dish.price) {
+  $scope.isEnough = function (dishPrice) {
+    if ($scope.factory.balance >= dishPrice) {
       return true
     } else {
       return false
@@ -44,31 +44,6 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     console.log(menuData);
     socket.emit('menu was received', 'Меню получено');
   });
-
-
-
-  // $scope.menu = [
-  //   {
-  //     name: "Макароны по-флотски",
-  //     price: 100
-  //   },
-  //   {
-  //     name: "Картофель в мундирах",
-  //     price: 150
-  //   },
-  //   {
-  //     name: "Сосиски молочные",
-  //     price: 200
-  //   },
-  //   {
-  //     name: "Борщщ",
-  //     price: 300
-  //   },
-  //   {
-  //     name: "Суп с фрикадельками",
-  //     price: 50
-  //   }
-  // ];
 
   $scope.order = [
   ]

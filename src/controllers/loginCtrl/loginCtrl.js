@@ -26,12 +26,10 @@ app.controller('loginCtrl', function ($scope, $http, loginFactory) {
       .then(function (userData) {
         console.log(userData);
 
-        console.log('userData[0] - '+ userData[0]);
-
+        console.log('userData.data.name - '+ userData.data.name);
         $scope.factory.userName = userData.data.name;
-        $scope.factory.balance = userData.data.balance;
+        $scope.factory.balance = +userData.data.balance;
         console.log($scope.factory);
-
       })
       .then(function (e) {
         if (e) console.log(e);

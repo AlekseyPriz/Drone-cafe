@@ -36,7 +36,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   name: {type: String, required: true},
   email: {type: String, index: { unique: true }},
-  balance: {type: Number,  default: 100}
+  balance: {type: Number,  default: "100"}
 });
 
 const  User = mongoose.model('User', userSchema);
@@ -103,7 +103,8 @@ app.post('/api/v1/user', function(req, res) {
       console.log(err);
     } else if (result.length) {
       console.log('Исходная коллекция: ', result[0]);
-      res.json(result);
+      res.json({name: result[0].name, email: result[0].email, balance: result[0].balance});
+     // res.json(result);
 
     } else {
 
@@ -112,7 +113,7 @@ app.post('/api/v1/user', function(req, res) {
           console.log('Ошибка добавления', err)
         } else{
           console.log('Пользователь добавлен', result);
-          res.json(result);
+          res.json({name: result.name, balance: result.balance});
         }
       });
 
