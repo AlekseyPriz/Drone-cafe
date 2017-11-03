@@ -32,8 +32,8 @@
 
         <span ng-if="orderValue">Сумма заказа : {{orderValue}} ГК</span>
 
-        <a href="#!" class="secondary-content  btn" ng-if="isEnough() && orderValue" ng-click=""> Заказать</a>
-        <a href="#!" class="secondary-content  btn disabled" ng-if="!isEnough()" ng-click=""> Заказать</a>
+        <a href="#!" class="secondary-content  btn" ng-if="order[0]" ng-click="createOrder()"> Заказать</a>
+        <a href="#!" class="secondary-content  btn disabled" ng-if="!order[0]"> Заказать</a>
 
     </div>
 </div>

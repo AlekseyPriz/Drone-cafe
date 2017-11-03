@@ -1,5 +1,6 @@
 app.controller('userBalanceCtrl', function ($scope, loginFactory) {
   console.log('Подключен userBalanceCtrl');
+  var socket = io.connect();
 
   $scope.factory = loginFactory;
 
@@ -24,6 +25,7 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     console.log($scope.order);
     $scope.dishQuantity += 1;
     $scope.orderValue += +dish.price;
+    //console.log('orderValue: ' +  $scope.orderValue);
     $scope.factory.balance -= +dish.price;
   };
 
@@ -36,7 +38,20 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
 
   };
 
-  var socket = io.connect();
+  $scope.createOrder = function () {
+    console.log('Заказ отправлен на сервер ', $scope.order);
+    socket.emit('new Order', {
+      userName: $scope.factory.userName,
+      userEmail: $scope.factory.email,
+      order: $scope.order
+    });
+    $scope.order = [];
+    $scope.dishQuantity = 1;
+    $scope.orderValue = null;
+
+  };
+
+  //var socket = io.connect();
   socket.on('get menu', function (menuData) {
     $scope.$apply(function () {
       $scope.menu = menuData;

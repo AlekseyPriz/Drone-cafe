@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const file = require('./menu/file-promise');
 
 
+
 const app = express();
 
 // Настройка Монгуза
@@ -113,7 +114,7 @@ app.post('/api/v1/user', function(req, res) {
           console.log('Ошибка добавления', err)
         } else{
           console.log('Пользователь добавлен', result);
-          res.json({name: result.name, balance: result.balance});
+          res.json({name: result.name, email: result.email, balance: result.balance});
         }
       });
 

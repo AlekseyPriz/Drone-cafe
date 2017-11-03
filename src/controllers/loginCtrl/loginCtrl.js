@@ -28,6 +28,7 @@ app.controller('loginCtrl', function ($scope, $http, loginFactory) {
 
         console.log('userData.data.name - '+ userData.data.name);
         $scope.factory.userName = userData.data.name;
+        $scope.factory.email = userData.data.email;
         $scope.factory.balance = +userData.data.balance;
         console.log($scope.factory);
       })
@@ -38,3 +39,4 @@ app.controller('loginCtrl', function ($scope, $http, loginFactory) {
   };
 
 });
+

@@ -9,6 +9,7 @@ var debug = require('debug')('drone-cafe:server');
 var http = require('http');
 const file = require('../menu/file-promise');
 const path = require('path');
+const Order = require('../models/orderModel');
 
 
 /**
@@ -115,4 +116,34 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function () {
     console.log('user disconnected');
   });
+  socket.on('new Order', function (newOrderData) {
+    //console.log('Заказ получен :', newOrderData);
+    console.log('Заказ получен');
+
+    let orderToDB = [];
+    newOrderData.order.forEach(function (item) {
+
+      Order.create({
+        visitorsEmail: newOrderData.userEmail,
+        visitorsName: newOrderData.userName,
+        dish : item.name
+      }, (err, result) => {
+        if (err) {
+          console.log('Ошибка добавления', err)
+        } else{
+          console.log('Пользователь добавлен', result);
+          //res.json('Пользователь добавлен');
+        }
+      });
+
+
+      // orderToDB.push({
+      //   name: item.name
+      // });
+    });
+
+
+  });
+
+
 });
