@@ -97,9 +97,7 @@ var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
 
-  // Загрузка меню
   file
-
     .read(path.join(__dirname, '../menu/menu.json'))
     .then(data => JSON.parse(data))
     .then(data => {
@@ -109,18 +107,17 @@ io.sockets.on('connection', function (socket) {
     })
     .catch(err => console.error(err));
 
-  //socket.emit('news', { hello: 'world' });
   socket.on('menu was received', function (data) {
     console.log("Данные получены от клиента" + data);
   });
+
   socket.on('disconnect', function () {
     console.log('user disconnected');
   });
+
   socket.on('new Order', function (newOrderData) {
-    //console.log('Заказ получен :', newOrderData);
     console.log('Заказ получен');
 
-    let orderToDB = [];
     newOrderData.order.forEach(function (item) {
 
       Order.create({
@@ -132,18 +129,54 @@ io.sockets.on('connection', function (socket) {
           console.log('Ошибка добавления', err)
         } else{
           console.log('Пользователь добавлен', result);
-          //res.json('Пользователь добавлен');
         }
       });
-
-
-      // orderToDB.push({
-      //   name: item.name
-      // });
     });
-
-
   });
+
+  socket.on('Get orders', function (data) {
+    console.log('user disconnected');
+    console.log(data);
+    Order.find({status: "Заказано"}, function(err, result) {
+      if (err) {
+        console.log(err);
+      } else if (result.length) {
+        console.log('Исходная коллекция: ', result);
+        let resResult = [];
+        result.forEach(function (item) {
+          resResult.push({
+            name: item.dish,
+            status: item.status,
+            userName: item.visitorsName,
+            visitorsEmail: item.visitorsEmail,
+          })
+        });
+
+        socket.emit('orders', resResult)
+      }
+    })
+  });
+
+  socket.on('change dish status', function (data) {
+    console.log('change dish status   ', data);
+
+    Order.update(
+      {
+      visitorsEmail : data.visitorsEmail,
+      visitorsName : data.userName,
+      dish : data.name,
+      status : data.status
+      },
+      {'$set': {status: data.newStatus}},
+      (err, doc) => {
+        if (err) {
+          console.log('Ошибка редактирования', err)
+        } else{
+          console.log('Статус изменен', doc);
+        }
+      });
+  });
+
 
 
 });

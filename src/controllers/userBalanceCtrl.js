@@ -1,6 +1,6 @@
 app.controller('userBalanceCtrl', function ($scope, loginFactory) {
   console.log('Подключен userBalanceCtrl');
-  var socket = io.connect();
+  let socket = io.connect();
 
   $scope.factory = loginFactory;
 
