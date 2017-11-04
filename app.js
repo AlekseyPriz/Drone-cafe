@@ -39,23 +39,18 @@ mongoose.connection.on('disconnected', () => {
 
 
 
-// Загрузка меню
-file
-  .read('../menu/menu.json')
-  .then(data => JSON.parse(data))
-  .then(data => {
-    console.log(data)
-  })
-  .catch(err => console.error(err));
+// // Загрузка меню
+// file
+//   .read('../menu/menu.json')
+//   .then(data => JSON.parse(data))
+//   .then(data => {
+//     console.log(data)
+//   })
+//   .catch(err => console.error(err));
 
 // Дрон кафе
 
-const drone = require('netology-fake-drone-api');
 
-drone
-  .deliver()
-  .then(() => console.log('Доставлено'))
-  .catch(() => console.log('Возникли сложности'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -12,7 +12,7 @@ app.controller('kitchenCtrl', function ($scope) {
   $scope.startCooking = function (dish) {
     $scope.dishesInProcess.push(dish);
     console.log($scope.dishesInProcess);
-    socket.emit('change dish status',
+    socket.emit('set dish preparing status',
       {
         name: dish.name,
         status: dish.status,
@@ -25,7 +25,7 @@ app.controller('kitchenCtrl', function ($scope) {
 
   $scope.remove = function(dish){
 
-    socket.emit('change dish status',
+    socket.emit('set dish delivered status',
       {
         name: dish.name,
         status: "Готовится",
@@ -34,8 +34,8 @@ app.controller('kitchenCtrl', function ($scope) {
         visitorsEmail: dish.visitorsEmail
       }
     );
-    let indexInProcess = $scope.dishesInProcess.indexOf(dish)
-    let indexOrdered = $scope.orderedDishes.indexOf(dish)
+    let indexInProcess = $scope.dishesInProcess.indexOf(dish);
+    let indexOrdered = $scope.orderedDishes.indexOf(dish);
 
     $scope.dishesInProcess.splice(indexInProcess,1);
     $scope.orderedDishes.splice(indexOrdered,1);

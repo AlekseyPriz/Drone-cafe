@@ -4,13 +4,14 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('drone-cafe:server');
-var http = require('http');
+const app = require('../app');
+const debug = require('debug')('drone-cafe:server');
+const http = require('http');
 const file = require('../menu/file-promise');
 const path = require('path');
 const Order = require('../models/orderModel');
 const User = require('../models/userModel');
+const drone = require('netology-fake-drone-api');
 
 
 /**
@@ -102,14 +103,14 @@ io.sockets.on('connection', function (socket) {
     .read(path.join(__dirname, '../menu/menu.json'))
     .then(data => JSON.parse(data))
     .then(data => {
-      console.log(data);
+      //console.log(data);
       socket.emit('get menu', data);
 
     })
     .catch(err => console.error(err));
 
   socket.on('menu was received', function (data) {
-    console.log("Данные получены от клиента" + data);
+    console.log("Ответ от клиента: " + data);
   });
 
   socket.on('disconnect', function () {
@@ -142,7 +143,7 @@ io.sockets.on('connection', function (socket) {
         if (err) {
           console.log('Ошибка добавления', err)
         } else{
-          console.log('Пользователь добавлен', result);
+          console.log('Блюдо добавлено', result);
         }
       });
 
@@ -150,7 +151,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('Get orders', function (data) {
-    console.log('user disconnected');
+    //console.log('user disconnected');
     console.log(data);
 
     Order.find({status: "Заказано"}, function(err, result) {
@@ -191,8 +192,8 @@ io.sockets.on('connection', function (socket) {
 
   });
 
-  socket.on('change dish status', function (data) {
-    console.log('change dish status   ', data);
+  socket.on('set dish preparing status', function (data) {
+    console.log('set dish preparing status   ', data);
 
     Order.update({
       visitorsEmail : data.visitorsEmail,
@@ -211,6 +212,63 @@ io.sockets.on('connection', function (socket) {
 
   });
 
+  socket.on('set dish delivered status', function (data) {
+    console.log('set dish delivered status   ', data);
 
+    Order.update({
+        visitorsEmail : data.visitorsEmail,
+        visitorsName : data.userName,
+        dish : data.name,
+        status : data.status
+      },
+      {'$set': {status: data.newStatus}},
+      (err, doc) => {
+        if (err) {
+          console.log('Ошибка редактирования', err)
+        } else{
+          console.log('Статус изменен', doc);
 
+          drone
+            .deliver()
+            .then( () => {
+              console.log('Доставлено');
+              console.log(data);
+
+              Order.update({
+                  visitorsEmail : data.visitorsEmail,
+                  visitorsName : data.userName,
+                  dish : data.name,
+                  status : "Доставляется"
+                },
+                {'$set': {status: "Подано"}},
+                (err, doc) => {
+                  if (err) {
+                    console.log('Ошибка редактирования', err)
+                  } else{
+                    console.log('Статус изменен на "Подано"', doc);
+                  }
+                });
+
+            })
+            .catch(() => {
+              console.log('Возникли сложности');
+
+              Order.update({
+                  visitorsEmail : data.visitorsEmail,
+                  visitorsName : data.userName,
+                  dish : data.name,
+                  status : "Доставляется"
+                },
+                {'$set': {status: "Возникли сложности"}},
+                (err, doc) => {
+                  if (err) {
+                    console.log('Ошибка редактирования', err)
+                  } else{
+                    console.log('Статус изменен на "Возникли сложности"', doc);
+                  }
+                });
+            });
+        }
+      });
+  });
 });
