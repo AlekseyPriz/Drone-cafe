@@ -10,6 +10,7 @@ var http = require('http');
 const file = require('../menu/file-promise');
 const path = require('path');
 const Order = require('../models/orderModel');
+const User = require('../models/userModel');
 
 
 /**
@@ -116,7 +117,20 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('new Order', function (newOrderData) {
-    console.log('Заказ получен');
+    console.log('Заказ получен', newOrderData);
+
+    User.update({
+        name: newOrderData.userName,
+        email: newOrderData.userEmail
+      },
+      {'$set': {balance: newOrderData.userBalance}},
+      (err, doc) => {
+        if (err) {
+          console.log('Ошибка редактирования', err)
+        } else{
+          console.log('Баланс изменен', doc);
+        }
+      });
 
     newOrderData.order.forEach(function (item) {
 
@@ -131,12 +145,14 @@ io.sockets.on('connection', function (socket) {
           console.log('Пользователь добавлен', result);
         }
       });
+
     });
   });
 
   socket.on('Get orders', function (data) {
     console.log('user disconnected');
     console.log(data);
+
     Order.find({status: "Заказано"}, function(err, result) {
       if (err) {
         console.log(err);
@@ -151,17 +167,34 @@ io.sockets.on('connection', function (socket) {
             visitorsEmail: item.visitorsEmail,
           })
         });
-
         socket.emit('orders', resResult)
       }
-    })
+    });
+
+    Order.find({status: "Готовится"}, function(err, result) {
+      if (err) {
+        console.log(err);
+      } else if (result.length) {
+        console.log('Исходная коллекция: ', result);
+        let resResult = [];
+        result.forEach(function (item) {
+          resResult.push({
+            name: item.dish,
+            status: item.status,
+            userName: item.visitorsName,
+            visitorsEmail: item.visitorsEmail,
+          })
+        });
+        socket.emit('dishesInProcess', resResult);
+      }
+    });
+
   });
 
   socket.on('change dish status', function (data) {
     console.log('change dish status   ', data);
 
-    Order.update(
-      {
+    Order.update({
       visitorsEmail : data.visitorsEmail,
       visitorsName : data.userName,
       dish : data.name,
@@ -175,6 +208,7 @@ io.sockets.on('connection', function (socket) {
           console.log('Статус изменен', doc);
         }
       });
+
   });
 
 

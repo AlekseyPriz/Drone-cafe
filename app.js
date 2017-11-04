@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const file = require('./menu/file-promise');
+const User = require('./models/userModel');
 
 
 
@@ -31,25 +32,11 @@ mongoose.connection.on('disconnected', () => {
   console.log('Монгуз отключен');
 });
 
-const Schema = mongoose.Schema;
-
 // схема для Пользователей
-const userSchema = new Schema({
-  name: {type: String, required: true},
-  email: {type: String, index: { unique: true }},
-  balance: {type: Number,  default: "100"}
-});
 
-const  User = mongoose.model('User', userSchema);
 
-// User.create({name : "Федор", email: "f@f.com"}, (err, result) => {
-//   if (err) {
-//     console.log('Ошибка добавления', err)
-//   } else{
-//     console.log('Пользователь добавлен', result);
-//     //res.json(result);
-//   }
-// });
+
+
 
 
 // Загрузка меню

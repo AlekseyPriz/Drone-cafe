@@ -52,6 +52,17 @@ app.controller('kitchenCtrl', function ($scope) {
     });
   });
 
+  socket.on('dishesInProcess', function (data) {
+    console.log(data);
+    $scope.$apply(function () {
+      data.forEach(function (item) {
+        $scope.dishesInProcess.push(item);
+      });
+    });
+  });
+
+
+
   // socket.on('get orders', function (menuData) {
   //   // $scope.$apply(function () {
   //   //   $scope.menu = menuData;

@@ -43,7 +43,8 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     socket.emit('new Order', {
       userName: $scope.factory.userName,
       userEmail: $scope.factory.email,
-      order: $scope.order
+      order: $scope.order,
+      userBalance: $scope.factory.balance
     });
     $scope.order = [];
     $scope.dishQuantity = 1;
