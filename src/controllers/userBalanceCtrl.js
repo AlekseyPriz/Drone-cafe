@@ -9,6 +9,13 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     $scope.factory.balance += 100;
   };
 
+  socket.on('update user fee', function (feeData) {
+    console.log('feeData', feeData);
+    $scope.$apply(function () {
+      $scope.factory.balance = feeData.balance;
+    });
+  });
+
   $scope.dishQuantity = 1;
 
   $scope.orderValue = null;
@@ -62,6 +69,6 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
   });
 
   $scope.order = [
-  ]
+  ];
 
 });

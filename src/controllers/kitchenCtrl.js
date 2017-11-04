@@ -18,7 +18,8 @@ app.controller('kitchenCtrl', function ($scope) {
         status: dish.status,
         newStatus: "Готовится",
         userName: dish.userName,
-        visitorsEmail: dish.visitorsEmail
+        visitorsEmail: dish.visitorsEmail,
+        dishPrice: dish.dishPrice
       }
     );
   };
@@ -31,7 +32,8 @@ app.controller('kitchenCtrl', function ($scope) {
         status: "Готовится",
         newStatus: "Доставляется",
         userName: dish.userName,
-        visitorsEmail: dish.visitorsEmail
+        visitorsEmail: dish.visitorsEmail,
+        dishPrice: dish.dishPrice
       }
     );
     let indexInProcess = $scope.dishesInProcess.indexOf(dish);
@@ -63,13 +65,5 @@ app.controller('kitchenCtrl', function ($scope) {
 
 
 
-  // socket.on('get orders', function (menuData) {
-  //   // $scope.$apply(function () {
-  //   //   $scope.menu = menuData;
-  //   // });
-  //   console.log('Заказы получены');
-  //
-  //   //console.log(menuData);
-  //   socket.emit('orders was received', 'Заказы получены');
-  // });
+
 });
