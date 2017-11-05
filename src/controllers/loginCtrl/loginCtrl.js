@@ -1,31 +1,22 @@
 app.controller('loginCtrl', function ($scope, $http, loginFactory) {
   console.log('Подключен loginCtrl');
+  let socket = io.connect();
 
   $scope.user = {};
 
   $scope.factory = loginFactory;
 
   $scope.setUser = function () {
-    console.log($scope.user);
-
-    return $http({method: 'POST', url:
-    // 'http://localhost:4000/api/v1/user'
-    'https://guarded-thicket-38576.herokuapp.com/api/v1/user'
-      , data:  $scope.user})
-      .then(function (userData) {
-        console.log(userData);
-
-        console.log('userData.data.name - '+ userData.data.name);
-        $scope.factory.userName = userData.data.name;
-        $scope.factory.email = userData.data.email;
-        $scope.factory.balance = +userData.data.balance;
+    socket.emit('user', $scope.user);
+    socket.on('userData', function (userData) {
+      console.log('User ---> ', userData);
+      $scope.$apply(function () {
+        $scope.factory.userName = userData.name;
+        $scope.factory.email = userData.email;
+        $scope.factory.balance = userData.balance;
         console.log($scope.factory);
-      })
-      .then(function (e) {
-        if (e) console.log(e);
-      })
-
+      });
+    });
   };
-
 });
 

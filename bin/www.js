@@ -112,52 +112,50 @@ io.sockets.on('connection', function (socket) {
     console.log("Ответ от клиента: " + data);
   });
 
+  socket.on('user', function (userData) {
+    console.log('userData ---> ', userData);
+
+    User.find({name : userData.name, email: userData.email}, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else if (result.length) {
+        console.log('Исходная коллекция: ', result[0]);
+        socket.emit('userData' ,{name: result[0].name, email: result[0].email, balance: result[0].balance})
+
+      } else {
+
+        User.create({name : userData.name, email : userData.email}, (err, result) => {
+          if (err) {
+            console.log('Ошибка добавления', err)
+          } else {
+            console.log('Пользователь добавлен', result);
+            socket.emit('userData' ,{name: result.name, email: result.email, balance: result.balance})
+          }
+        });
+
+      }
+    });
+  });
+
   socket.on('disconnect', function () {
     console.log('user disconnected');
   });
 
-  // socket.on('new Order', function (newOrderData) {
-  //   console.log('Заказ получен', newOrderData);
-  //
-  //   User.update({
-  //       name: newOrderData.userName,
-  //       email: newOrderData.userEmail
-  //     },
-  //     {'$set': {balance: newOrderData.userBalance}},
-  //     (err, doc) => {
-  //       if (err) {
-  //         console.log('Ошибка редактирования', err)
-  //       } else{
-  //         console.log('Баланс изменен', doc);
-  //       }
-  //     });
-  //
-  //   newOrderData.order.forEach(function (item) {
-  //
-  //     Order.create({
-  //       visitorsEmail: newOrderData.userEmail,
-  //       visitorsName: newOrderData.userName,
-  //       dish : item.name,
-  //       dishPrice: item.price
-  //     }, (err, result) => {
-  //       if (err) {
-  //         console.log('Ошибка добавления', err)
-  //       } else{
-  //         console.log('Блюдо добавлено', result);
-  //       }
-  //     });
-  //
-  //   });
-  // });
-
   socket.on('new Order', function (newOrderData) {
+    socket.broadcast.emit('new Order', newOrderData
+    //   {
+    //   name: newOrderData.dish,
+    //   status: newOrderData.status,
+    //   userName: newOrderData.visitorsName,
+    //   visitorsEmail: newOrderData.visitorsEmail,
+    //   dishPrice: newOrderData.dishPrice,
+    //   number: newOrderData.number
+    // }
+    );
     console.log('Заказ получен', newOrderData);
 
-    User.update({
-        name: newOrderData.userName,
-        email: newOrderData.userEmail
-      },
-      {'$set': {balance: newOrderData.userBalance}},
+    User.update({name: newOrderData.visitorsName, email: newOrderData.visitorsEmail},
+      {'$set': {balance: newOrderData.balance}},
       (err, doc) => {
         if (err) {
           console.log('Ошибка редактирования', err)
@@ -167,8 +165,8 @@ io.sockets.on('connection', function (socket) {
       });
 
     Order.create({
-      visitorsEmail: newOrderData.userEmail,
-      visitorsName: newOrderData.userName,
+      visitorsEmail: newOrderData.visitorsEmail,
+      visitorsName: newOrderData.visitorsName,
       dish : newOrderData.dish,
       dishPrice: newOrderData.price,
       number: newOrderData.number,
@@ -223,23 +221,15 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('start preparing', function (data) {
-    socket.broadcast.emit('start preparing', {
-      dishPrice: data.dishPrice,
-      name: data.name,
-      status: data.newStatus,
-      userName: data.userName,
-      visitorsEmail: data.visitorsEmail,
-      number: data.number
-    });
-    console.log('start preparing   ', data);
+    socket.broadcast.emit('start preparing', data);
 
     Order.update({
       visitorsEmail : data.visitorsEmail,
-      visitorsName : data.userName,
-      dish : data.name,
-      status : data.status
+      visitorsName : data.visitorsName,
+      dish : data.dish,
+      status : "Заказано"
       },
-      {'$set': {status: data.newStatus}},
+      {'$set': {status: data.status}},
       (err, doc) => {
         if (err) {
           console.log('Ошибка редактирования', err)
@@ -254,16 +244,14 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('send', dataDelivered);
     console.log('send --->  ', dataDelivered);
 
-
-
     Order.update({
         visitorsEmail : dataDelivered.visitorsEmail,
-        visitorsName : dataDelivered.userName,
-        dish : dataDelivered.name,
-        status : dataDelivered.status,
+        visitorsName : dataDelivered.visitorsName,
+        dish : dataDelivered.dish,
+        status : 'Готовится',
         dishPrice: dataDelivered.dishPrice
       },
-      {'$set': {status: dataDelivered.newStatus}},
+      {'$set': {status: "Доставляется"}},
       (err, doc) => {
         if (err) {
           console.log('Ошибка редактирования', err)
@@ -273,20 +261,21 @@ io.sockets.on('connection', function (socket) {
           drone
             .deliver()
             .then( () => {
+              dataDelivered.status = "Подано";
               console.log('Доставлено');
 
               Order.update({
                   visitorsEmail : dataDelivered.visitorsEmail,
-                  visitorsName : dataDelivered.userName,
-                  dish : dataDelivered.name,
-                  status : "Доставляется"
+                  visitorsName : dataDelivered.visitorsName,
+                  dish : dataDelivered.dish,
+                  number: dataDelivered.number
                 },
                 {'$set': {status: "Подано"}},
                 (err, doc) => {
                   if (err) {
                     console.log('Ошибка редактирования', err)
                   } else {
-                    dataDelivered.status = "Подано";
+                    //dataDelivered.status = "Подано";
                     io.emit('delivered', dataDelivered);
                     console.log('Статус изменен на "Подано"', doc);
                   }
@@ -299,9 +288,9 @@ io.sockets.on('connection', function (socket) {
 
               Order.update({
                   visitorsEmail : dataDelivered.visitorsEmail,
-                  visitorsName : dataDelivered.userName,
-                  dish : dataDelivered.name,
-                  status : "Доставляется"
+                  visitorsName : dataDelivered.visitorsName,
+                  dish : dataDelivered.dish,
+                  number: dataDelivered.number
                 }, {'$set': {status: "Возникли сложности"}},
                 (err, doc) => {
                   if (err) {
@@ -311,7 +300,7 @@ io.sockets.on('connection', function (socket) {
                     dataDelivered.status = "Возникли сложности";
                     io.emit('error', dataDelivered);
 
-                    User.update({name: dataDelivered.userName, email: dataDelivered.visitorsEmail},
+                    User.update({name: dataDelivered.visitorsName, email: dataDelivered.visitorsEmail},
                       {'$inc': {balance: dataDelivered.dishPrice}},
                       (err, doc) => {
                         if (err) {
@@ -320,14 +309,13 @@ io.sockets.on('connection', function (socket) {
 
                           console.log('Деньги возвращены на счет пользователя', doc);
 
-                          User.findOne({name: dataDelivered.userName, email: dataDelivered.visitorsEmail},
+                          User.findOne({name: dataDelivered.visitorsName, email: dataDelivered.visitorsEmail},
                             function (err, resultBalance) {
                               if (err) {
                                 console.log('Ошибка поиска пользователя', err);
-
                               } else {
                                 console.log('Result.balance: ->  ', resultBalance.balance);
-                                io.emit('update user fee', {balance: resultBalance.balance});
+                                io.emit('update user fee', {balance: +resultBalance.balance});
                               }
                             })
                         }

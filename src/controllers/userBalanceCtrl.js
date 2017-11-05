@@ -46,16 +46,15 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     dish.status = "Заказано";
 
     socket.emit('new Order', {
-      userName: $scope.factory.userName,
-      userEmail: $scope.factory.email,
+      visitorsName: $scope.factory.userName,
+      visitorsEmail: $scope.factory.email,
       dish: dish.name,
-      price: dish.price,
+      dishPrice: dish.price,
       number: dish.number,
-      userBalance: $scope.factory.balance
+      balance: $scope.factory.balance
     });
   };
 
-  //var socket = io.connect();
   socket.on('get menu', function (menuData) {
     $scope.$apply(function () {
       $scope.menu = menuData;
@@ -73,7 +72,7 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
 
   socket.on('send', function(dishdata) {
     $scope.$apply(function () {
-      $scope.order[dishdata.number - 1].status = dishdata.newStatus;
+      $scope.order[dishdata.number - 1].status = dishdata.status;
     });
   });
 

@@ -10,32 +10,28 @@ app.controller('kitchenCtrl', function ($scope) {
 
 
   $scope.startCooking = function (dish) {
-    $scope.dishesInProcess.push(dish);
-    console.log($scope.dishesInProcess);
-    socket.emit('start preparing',
-      {
-        name: dish.name,
-        status: dish.status,
-        newStatus: "Готовится",
-        userName: dish.userName,
-        visitorsEmail: dish.visitorsEmail,
-        dishPrice: dish.dishPrice,
-        number: dish.number
-      }
-    );
+    dish.status = "Готовится";
+
+      $scope.dishesInProcess.push(dish);
+      socket.emit('start preparing', dish);
   };
 
   $scope.remove = function(dish){
+    dish.status = "Доставляется";
+
+    console.log('dish remove ---> ', dish);
+
     socket.emit('send',
-      {
-        name: dish.name,
-        status: "Готовится",
-        newStatus: "Доставляется",
-        userName: dish.userName,
-        visitorsEmail: dish.visitorsEmail,
-        dishPrice: dish.dishPrice,
-        number: dish.number
-      }
+      dish
+      // {
+      //   name: dish.dish,
+      //   status: "Готовится",
+      //   newStatus: "Доставляется",
+      //   userName: dish.userName,
+      //   visitorsEmail: dish.visitorsEmail,
+      //   dishPrice: dish.dishPrice,
+      //   number: dish.number
+      // }
     );
     let indexInProcess = $scope.dishesInProcess.indexOf(dish);
     let indexOrdered = $scope.orderedDishes.indexOf(dish);
@@ -45,6 +41,12 @@ app.controller('kitchenCtrl', function ($scope) {
 
   };
   socket.emit('Get orders', 'Запрос заказов');
+
+  socket.on('new Order', function (data) {
+    $scope.$apply(function () {
+        $scope.orderedDishes.push(data);
+    });
+  });
 
   socket.on('orders', function (data) {
     console.log(data);

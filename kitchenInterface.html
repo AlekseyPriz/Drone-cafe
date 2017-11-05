@@ -25,7 +25,7 @@
             <li class="collection-item" ng-repeat="dish in dishesInProcess">
                 <div class="conteiner" style="height: 37px;">
                     <span>
-                       {{dish.name}} - {{dish.userName}} ({{dish.visitorsEmail}})
+                       {{dish.dish}} - {{dish.visitorsName}} ({{dish.visitorsEmail}})
                     </span>
                     <a class="waves-effect waves-light btn right valign-wrapper" ng-click="remove(dish)">
                         Готово
@@ -40,7 +40,7 @@
             <li class="collection-item" ng-repeat="dish in orderedDishes">
                 <div class="conteiner" style="height: 37px;">
                     <span>
-                       {{dish.name}} - {{dish.userName}} ({{dish.visitorsEmail}})
+                       {{dish.dish}} - {{dish.visitorsName}} ({{dish.visitorsEmail}})
                     </span>
                     <a class="waves-effect waves-light btn right valign-wrapper" ng-if="!dish.ordered" ng-click="startCooking(dish); dish.ordered=true">
                         Начать готовить

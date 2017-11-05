@@ -74,40 +74,7 @@ app.get('/kitchen', function(req, res) {
   res.sendFile(path.join(__dirname + '/kitchenInterface.html'));
 });
 
-//добавление пользователя
-app.post('/api/v1/user', function(req, res) {
-  if (!req.body.name || !req.body.email) {
-    res.status(400);
-    res.send({ error: 'Данные указаны не полностью' });
-  }
-
-  User.find({name : req.body.name, email: req.body.email}, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else if (result.length) {
-      console.log('Исходная коллекция: ', result[0]);
-      res.json({name: result[0].name, email: result[0].email, balance: result[0].balance});
-     // res.json(result);
-
-    } else {
-
-      User.create({name : req.body.name, email : req.body.email}, (err, result) => {
-        if (err) {
-          console.log('Ошибка добавления', err)
-        } else{
-          console.log('Пользователь добавлен', result);
-          res.json({name: result.name, email: result.email, balance: result.balance});
-        }
-      });
-
-    }
-  });
-
-
-});
-
 app.all('/*', function(req, res) {
- // console.log("Сервер перенаправлен на ангулар роутер");
   res.sendfile(path.join(__dirname + '/index.html'));
 });
 
