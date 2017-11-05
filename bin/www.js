@@ -275,7 +275,6 @@ io.sockets.on('connection', function (socket) {
             .then( () => {
               console.log('Доставлено');
 
-
               Order.update({
                   visitorsEmail : dataDelivered.visitorsEmail,
                   visitorsName : dataDelivered.userName,
@@ -287,6 +286,8 @@ io.sockets.on('connection', function (socket) {
                   if (err) {
                     console.log('Ошибка редактирования', err)
                   } else {
+                    dataDelivered.status = "Подано";
+                    io.emit('delivered', dataDelivered);
                     console.log('Статус изменен на "Подано"', doc);
                   }
                 });
@@ -306,6 +307,9 @@ io.sockets.on('connection', function (socket) {
                   if (err) {
                     console.log('Ошибка редактирования', err)
                   } else {
+
+                    dataDelivered.status = "Возникли сложности";
+                    io.emit('error', dataDelivered);
 
                     User.update({name: dataDelivered.userName, email: dataDelivered.visitorsEmail},
                       {'$inc': {balance: dataDelivered.dishPrice}},

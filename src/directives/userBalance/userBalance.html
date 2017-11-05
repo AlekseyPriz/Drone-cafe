@@ -35,10 +35,25 @@
                         Пополнить на {{dish.price - factory.balance}} ГК
                     </div>
 
-                    <div class="chip light-blue white-text" ng-if="dish.status !== 'Выбрано'" >
+                    <div class="chip light-blue white-text" ng-if="dish.status === 'Заказано'">
                         {{dish.status}}
                     </div>
 
+                    <div class="chip light-blue darken-2 white-text" ng-if="dish.status === 'Готовится'">
+                        {{dish.status}}
+                    </div>
+
+                    <div class="chip light-blue darken-4 white-text" ng-if="dish.status === 'Доставляется'">
+                        {{dish.status}}
+                    </div>
+
+                    <div class="chip red white-text" ng-if="dish.status === 'Возникли сложности'">
+                        {{dish.status}}
+                    </div>
+
+                    <div class="chip orange white-text" ng-if="dish.status === 'Подано'">
+                        {{dish.status}}
+                    </div>
 
             </li>
         </ul>

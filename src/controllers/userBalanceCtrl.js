@@ -21,8 +21,6 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
 
   $scope.orderValue = null;
 
-
-
   $scope.putDishToOrder = function (dish) {
     console.log('Блюдо "' + dish.name + '" добавлено к заказу');
     $scope.order.push({
@@ -39,19 +37,6 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
     if($scope.factory.balance >= dishPrice) return true;
     return false
   };
-
-  // $scope.createOrder = function () {
-  //   console.log('Заказ отправлен на сервер ', $scope.order);
-  //   socket.emit('new Order', {
-  //     userName: $scope.factory.userName,
-  //     userEmail: $scope.factory.email,
-  //     order: $scope.order,
-  //     userBalance: $scope.factory.balance
-  //   });
-  //   //$scope.order = [];
-  //   $scope.dishQuantity = 1;
-  //   $scope.orderValue = null;
-  // };
 
   $scope.createOneOrder = function (dish) {
     console.log('Заказ одного блюда отправлен на сервер ', dish);
@@ -87,10 +72,20 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
   });
 
   socket.on('send', function(dishdata) {
-    console.log('dishdata --->', dishdata);
     $scope.$apply(function () {
-      let position = dishdata.number - 1;
-      $scope.order[position].status = dishdata.newStatus;
+      $scope.order[dishdata.number - 1].status = dishdata.newStatus;
+    });
+  });
+
+  socket.on('delivered', function(dishdata) {
+    $scope.$apply(function () {
+      $scope.order[dishdata.number - 1].status = dishdata.status;
+    });
+  });
+
+  socket.on('error', function(dishdata) {
+    $scope.$apply(function () {
+      $scope.order[dishdata.number - 1].status = dishdata.status;
     });
   });
 
