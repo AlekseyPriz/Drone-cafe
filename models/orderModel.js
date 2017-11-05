@@ -8,7 +8,8 @@ const orderSchema = new Schema({
   visitorsName: {type: String},
   dish: {type: Object},
   status: {type: String, default: "Заказано"},
-  dishPrice: {type: Number}
+  dishPrice: {type: Number},
+  number: {type: Number}
 });
 
 const  Order = mongoose.model('Order', orderSchema);

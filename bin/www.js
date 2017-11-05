@@ -99,10 +99,6 @@ var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
 
-  //socket.emit('update user fee', );
-  //socket.emit('update user fee', {balance: 55555555});
-
-
   file
     .read(path.join(__dirname, '../menu/menu.json'))
     .then(data => JSON.parse(data))
@@ -120,6 +116,40 @@ io.sockets.on('connection', function (socket) {
     console.log('user disconnected');
   });
 
+  // socket.on('new Order', function (newOrderData) {
+  //   console.log('Заказ получен', newOrderData);
+  //
+  //   User.update({
+  //       name: newOrderData.userName,
+  //       email: newOrderData.userEmail
+  //     },
+  //     {'$set': {balance: newOrderData.userBalance}},
+  //     (err, doc) => {
+  //       if (err) {
+  //         console.log('Ошибка редактирования', err)
+  //       } else{
+  //         console.log('Баланс изменен', doc);
+  //       }
+  //     });
+  //
+  //   newOrderData.order.forEach(function (item) {
+  //
+  //     Order.create({
+  //       visitorsEmail: newOrderData.userEmail,
+  //       visitorsName: newOrderData.userName,
+  //       dish : item.name,
+  //       dishPrice: item.price
+  //     }, (err, result) => {
+  //       if (err) {
+  //         console.log('Ошибка добавления', err)
+  //       } else{
+  //         console.log('Блюдо добавлено', result);
+  //       }
+  //     });
+  //
+  //   });
+  // });
+
   socket.on('new Order', function (newOrderData) {
     console.log('Заказ получен', newOrderData);
 
@@ -131,27 +161,22 @@ io.sockets.on('connection', function (socket) {
       (err, doc) => {
         if (err) {
           console.log('Ошибка редактирования', err)
-        } else{
+        } else {
           console.log('Баланс изменен', doc);
         }
       });
 
-    newOrderData.order.forEach(function (item) {
-
-      Order.create({
-        visitorsEmail: newOrderData.userEmail,
-        visitorsName: newOrderData.userName,
-        dish : item.name,
-        dishPrice: item.price
-      }, (err, result) => {
-        if (err) {
-          console.log('Ошибка добавления', err)
-        } else{
-          console.log('Блюдо добавлено', result);
-        }
-      });
-
+    Order.create({
+      visitorsEmail: newOrderData.userEmail,
+      visitorsName: newOrderData.userName,
+      dish : newOrderData.dish,
+      dishPrice: newOrderData.price,
+      number: newOrderData.number,
+    }, (err, result) => {
+      if (err) console.log('Ошибка добавления', err);
+      console.log('Блюдо добавлено', result);
     });
+
   });
 
   socket.on('Get orders', function (data) {
@@ -169,7 +194,8 @@ io.sockets.on('connection', function (socket) {
             status: item.status,
             userName: item.visitorsName,
             visitorsEmail: item.visitorsEmail,
-            dishPrice: item.dishPrice
+            dishPrice: item.dishPrice,
+            number: item.number
           })
         });
         socket.emit('orders', resResult)
@@ -196,8 +222,16 @@ io.sockets.on('connection', function (socket) {
 
   });
 
-  socket.on('set dish preparing status', function (data) {
-    console.log('set dish preparing status   ', data);
+  socket.on('start preparing', function (data) {
+    socket.broadcast.emit('start preparing', {
+      dishPrice: data.dishPrice,
+      name: data.name,
+      status: data.newStatus,
+      userName: data.userName,
+      visitorsEmail: data.visitorsEmail,
+      number: data.number
+    });
+    console.log('start preparing   ', data);
 
     Order.update({
       visitorsEmail : data.visitorsEmail,
@@ -216,9 +250,9 @@ io.sockets.on('connection', function (socket) {
 
   });
 
-  socket.on('set dish delivered status', function (dataDelivered) {
-
-    console.log('set dish delivered status   ', dataDelivered);
+  socket.on('send', function (dataDelivered) {
+    socket.broadcast.emit('send', dataDelivered);
+    console.log('send --->  ', dataDelivered);
 
 
 

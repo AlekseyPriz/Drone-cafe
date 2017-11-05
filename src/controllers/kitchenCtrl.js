@@ -12,28 +12,29 @@ app.controller('kitchenCtrl', function ($scope) {
   $scope.startCooking = function (dish) {
     $scope.dishesInProcess.push(dish);
     console.log($scope.dishesInProcess);
-    socket.emit('set dish preparing status',
+    socket.emit('start preparing',
       {
         name: dish.name,
         status: dish.status,
         newStatus: "Готовится",
         userName: dish.userName,
         visitorsEmail: dish.visitorsEmail,
-        dishPrice: dish.dishPrice
+        dishPrice: dish.dishPrice,
+        number: dish.number
       }
     );
   };
 
   $scope.remove = function(dish){
-
-    socket.emit('set dish delivered status',
+    socket.emit('send',
       {
         name: dish.name,
         status: "Готовится",
         newStatus: "Доставляется",
         userName: dish.userName,
         visitorsEmail: dish.visitorsEmail,
-        dishPrice: dish.dishPrice
+        dishPrice: dish.dishPrice,
+        number: dish.number
       }
     );
     let indexInProcess = $scope.dishesInProcess.indexOf(dish);
@@ -62,8 +63,5 @@ app.controller('kitchenCtrl', function ($scope) {
       });
     });
   });
-
-
-
 
 });

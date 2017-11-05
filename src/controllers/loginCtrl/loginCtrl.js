@@ -5,23 +5,12 @@ app.controller('loginCtrl', function ($scope, $http, loginFactory) {
 
   $scope.factory = loginFactory;
 
-  //$scope.userName ='';
-
-  // let postAnswer = function ($http) {
-  //   return $http({
-  //     method: 'POST',
-  //     url: 'http://localhost:4000/api/v1/user',
-  //     data:  $scope.user
-  //   });
-  // };
-
-
   $scope.setUser = function () {
     console.log($scope.user);
 
     return $http({method: 'POST', url:
-    // 'http://localhost:4000/api/v1/user'
-    'https://guarded-thicket-38576.herokuapp.com/api/v1/user'
+    'http://localhost:4000/api/v1/user'
+    // 'https://guarded-thicket-38576.herokuapp.com/api/v1/user'
       , data:  $scope.user})
       .then(function (userData) {
         console.log(userData);
