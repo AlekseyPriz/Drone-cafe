@@ -41,20 +41,24 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
   };
 
   $scope.createOneOrder = function (dish) {
-    console.log('Заказ одного блюда отправлен на сервер ', dish);
 
     $scope.factory.balance -= dish.price;
     $scope.orderValue += +dish.price;
     dish.status = "Заказано";
 
-    socket.emit('new Order', {
+    let oneOrder = {
       visitorsName: $scope.factory.userName,
       visitorsEmail: $scope.factory.email,
       dish: dish.name,
       dishPrice: dish.price,
       number: dish.number,
       balance: $scope.factory.balance
-    });
+    };
+
+    console.log('Заказ одного блюда отправлен на сервер ', oneOrder);
+
+
+    socket.emit('new Order', oneOrder);
   };
 
   socket.on('get menu', function (menuData) {

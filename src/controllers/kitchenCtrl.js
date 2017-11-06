@@ -10,6 +10,8 @@ app.controller('kitchenCtrl', function ($scope) {
 
 
   $scope.startCooking = function (dish) {
+    console.log('dish start ---> ', dish);
+
     dish.status = "Готовится";
 
       $scope.dishesInProcess.push(dish);

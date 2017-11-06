@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha"
   },
   "dependencies": {
     "@uirouter/angularjs": "^1.0.8",
@@ -16,15 +17,20 @@
     "jade": "~1.11.0",
     "jquery": "^3.2.1",
     "materialize-css": "^0.100.2",
-    "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.2",
     "mongoose": "^4.12.3",
+    "morgan": "~1.7.0",
     "netology-fake-drone-api": "^1.0.1",
-    "socket.io": "^2.0.4"
+    "serve-favicon": "~2.3.2",
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.0.4"
   },
   "main": "app.js",
   "engines": {
     "node": "~7.5.0",
     "npm": "~4.1.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3"
   }
 }
