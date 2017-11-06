@@ -22,6 +22,8 @@ app.controller('userBalanceCtrl', function ($scope, loginFactory) {
   $scope.orderValue = null;
 
   $scope.putDishToOrder = function (dish) {
+    console.log('Блюдо --->"' , dish );
+
     console.log('Блюдо "' + dish.name + '" добавлено к заказу');
     $scope.order.push({
       number: $scope.dishQuantity,
